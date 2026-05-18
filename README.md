@@ -46,15 +46,6 @@ The more secure version, described by **Blaise de Vigenère in 1586**, improved 
 - **Language** — Python 3
 - No external dependencies — pure standard library
 
-## Project Structure
-
-```
-autokey-cipher/
-├── autokey.py        # Core encryption & decryption logic
-├── tabula_recta.py   # Tabula Recta generation helper
-├── main.py           # CLI entry point
-└── README.md
-```
 
 ## Usage
 
