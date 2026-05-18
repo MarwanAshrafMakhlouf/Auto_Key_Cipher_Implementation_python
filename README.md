@@ -1,15 +1,105 @@
-# Auto_Key_Cipher_Implementation_python
-The Autokey Cipher is one such example. In general, the term autokey refers to any cipher where the key is based on the original plaintext. In its simplest form, it was first described by Girolamo Cardano, and consisted of using the plaintext itself as the keystream. However, since there was no key involved in this system, it suffered the same major flaw as the Atbash and the Trithemius Ciphers: if you knew it had been used, it was trivial to decode.
-The most famous version of the Autokey Cipher, however, was described by Blaise de Vigenère in 1586 (the one that was later misattributed the Vigenère Cipher). This cipher incorporates a keyword in the creation of the keystream, as well as the original plaintext.
-**Encryption**:
+Here's the enhanced README:
 
-Encryption using the Autokey Cipher is very similar to the Vigenère Cipher, except in the creation of the keystream.
-The keystream is made by starting with the keyword or keyphrase, and then appending to the end of this the plaintext itself.
-We then use a Tabula Recta to find the keystream letter across the top, and the plaintext letter down the left, and use the crossover letter as the ciphertext letter.
-As an example we shall encode the plaintext "meet me at the corner" using the keyword king. First we must generate the keystream, which starts with the keyword, and then continues with the plaintext itself, getting kingmeetme.
+---
 
+# Autokey Cipher — Python Implementation
 
-**Decryption**:
+A Python implementation of the classical **Autokey Cipher**, one of the most elegant polyalphabetic substitution ciphers in cryptographic history — described by Blaise de Vigenère in 1586.
 
-To decrypt a ciphertext using the Autokey Cipher, we start just as we did for the Vigenère Cipher, and find the first letter of the key across the top, find the ciphertext letter down that column, and take the plaintext letter at the far left of this row. As well as being the plaintext letter, we now need to add this letter to the end of the keystream as we shall need it later. Continuing to decode each letter, we add them to the end of the keystream each time.
-We shall decrypt the ciphertext "QNXEPKMAEGKLAAELDTPDLHN" which has been encrypted using the keyword queen. We start with the information shown in the table below.
+## Background
+
+The Autokey Cipher belongs to a family of ciphers where the key is derived from the plaintext itself. Its earliest form was described by **Girolamo Cardano**, who used the plaintext as its own keystream — a clever but flawed approach since it required no secret key.
+
+The more secure version, described by **Blaise de Vigenère in 1586**, improved on this by prepending a secret keyword to the plaintext before forming the keystream — making it significantly harder to crack than the Atbash or Trithemius Ciphers, and superior to the standard Vigenère Cipher.
+
+## How It Works
+
+### Encryption
+
+1. Generate the keystream by prepending the keyword to the plaintext
+2. Use a **Tabula Recta** — align the keystream letter across the top and the plaintext letter down the left
+3. The intersection gives the ciphertext letter
+
+**Example:** Encrypting `"meet me at the corner"` with keyword `king`
+
+| Plaintext  | m | e | e | t | m | e | a | t | t | h | e |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Keystream  | k | i | n | g | m | e | e | t | m | e | a |
+| Ciphertext | W | M | R | Z | Y | I | E | M | F | L | E |
+
+### Decryption
+
+1. Start with the keyword as the initial keystream
+2. For each letter: find the key letter column in the Tabula Recta, locate the ciphertext letter in that column, read the plaintext letter from the left
+3. **Append each recovered plaintext letter to the keystream** — this is what makes it "auto"
+
+**Example:** Decrypting `"QNXEPKMAEGKLAAELDTPDLHN"` with keyword `queen`
+
+> Each decrypted letter extends the keystream, allowing the next letter to be decoded — a self-feeding mechanism.
+
+## Features
+
+- Full **encryption** and **decryption** of alphabetic text
+- Keyword-based keystream generation
+- Handles uppercase and lowercase input
+- Ignores non-alphabetic characters (spaces, punctuation)
+- Clean CLI interface
+
+## Tech Stack
+
+- **Language** — Python 3
+- No external dependencies — pure standard library
+
+## Project Structure
+
+```
+autokey-cipher/
+├── autokey.py        # Core encryption & decryption logic
+├── tabula_recta.py   # Tabula Recta generation helper
+├── main.py           # CLI entry point
+└── README.md
+```
+
+## Usage
+
+```bash
+python main.py
+```
+
+**Encrypt:**
+```bash
+Enter mode (encrypt/decrypt): encrypt
+Enter plaintext: meet me at the corner
+Enter keyword: king
+Ciphertext: WMRZYIEMFLE...
+```
+
+**Decrypt:**
+```bash
+Enter mode (encrypt/decrypt): decrypt
+Enter ciphertext: QNXEPKMAEGKLAAELDTPDLHN
+Enter keyword: queen
+Plaintext: ...
+```
+
+## Key Concept: Why Autokey Is Stronger Than Vigenère
+
+| Feature | Vigenère | Autokey |
+|---|---|---|
+| Keystream length | Repeats (fixed key) | Never repeats (plaintext-fed) |
+| Vulnerable to Kasiski? | Yes | No |
+| Key dependency | Static keyword | Keyword + plaintext |
+
+The repeating key of the Vigenère Cipher makes it vulnerable to frequency analysis via the **Kasiski examination**. Autokey eliminates this by making the keystream as long as the message itself — never cycling.
+
+## Historical Note
+
+This cipher is often misattributed as the "Vigenère Cipher," but the cipher Vigenère himself considered his masterwork was this Autokey variant. The standard Vigenère Cipher was actually described earlier by Giovan Battista Bellaso in 1553.
+
+## Course
+
+Implemented as part of a cryptography/security study — classical cipher series.
+
+---
+
+> *"A cipher is only as strong as its keystream."*
