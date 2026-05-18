@@ -1,7 +1,3 @@
-Here's the enhanced README:
-
----
-
 # Autokey Cipher — Python Implementation
 
 A Python implementation of the classical **Autokey Cipher**, one of the most elegant polyalphabetic substitution ciphers in cryptographic history — described by Blaise de Vigenère in 1586.
